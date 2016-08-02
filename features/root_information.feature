@@ -1,7 +1,7 @@
 Feature: Root information
   In order to know what is being backed up
   As a client
-  I want to request a list of roots
+  I want to request a information about roots
 
   Background:
     Given the root with path '123/456' exists

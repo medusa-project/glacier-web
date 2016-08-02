@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     resources :roots do
       get :archives, on: :collection
     end
+    resources :archives
   end
 end
