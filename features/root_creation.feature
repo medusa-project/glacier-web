@@ -9,6 +9,7 @@ Feature: Root creation
     Then the JSON should have the following:
       | status    | "CREATED" |
       | root/path | "123/456" |
+    And there should be a job to backup the root with path '123/456'
 
   Scenario: Attempt to create a root that already exists
     Given the root with path '123/456' exists
