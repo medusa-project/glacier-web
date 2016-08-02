@@ -18,5 +18,5 @@ When(/^I request the list of archives for the root with path '(.*)'$/) do |path|
 end
 
 When(/^I create a root with path '(.*)'$/) do |path|
-  visit create_root_path(path: path)
+  page.driver.post roots_path, path: path
 end
