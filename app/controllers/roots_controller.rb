@@ -9,4 +9,13 @@ class RootsController < ApplicationController
     @archives = @root.archives.order('created_at asc')
   end
 
+  def create
+    path = params[:path]
+    if @root = Root.find_by(path: path)
+      render 'create_exists'
+    else
+
+    end
+  end
+
 end
