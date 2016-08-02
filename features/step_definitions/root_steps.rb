@@ -16,3 +16,7 @@ end
 When(/^I request the list of archives for the root with path '(.*)'$/) do |path|
   visit archives_roots_path(path: path)
 end
+
+When(/^I create a root with path '(.*)'$/) do |path|
+  visit create_root_path(path: path)
+end
