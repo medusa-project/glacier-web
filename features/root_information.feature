@@ -9,8 +9,9 @@ Feature: Root information
 
   Scenario: Get list of roots
     When I request the list of roots
-    Then the JSON response at "0/path" should be "123/456"
-    And the JSON response at "1/path" should be "654/321"
+    Then the JSON should have the following:
+      | 0/path | "123/456" |
+      | 1/path | "654/321" |
 
   Scenario: Get list of archives for a given root
     Given the root with path '123/456' has archives with fields:
@@ -18,8 +19,11 @@ Feature: Root information
       | 2  | 102   | 12345 |
       | 4  | 302   | 43993 |
     When I request the list of archives for the root with path '123/456'
-    Then the JSON response at "path" should be "123/456"
-    And the JSON response at "archives/2/count" should be 102
-    And the JSON response at "archives/2/size" should be 12345
-    And the JSON response at "archives/4/count" should be 302
-    And the JSON response at "archives/4/size" should be 43993
+    Then the JSON should have the following:
+      | path             | "123/456" |
+      | archives/0/id    | 2         |
+      | archives/0/count | 102       |
+      | archives/0/size  | 12345   |
+      | archives/1/id    | 4         |
+      | archives/1/count | 302       |
+      | archives/1/size  | 43993   |
