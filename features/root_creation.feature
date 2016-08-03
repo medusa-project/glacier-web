@@ -22,4 +22,4 @@ Feature: Root creation
     When I create a root with path '123/456'
     Then the JSON should have the following:
       | status  | "NOT_CREATED"                          |
-      | message | "The storage directory does not exist" |
+      | message | "The requested storage directory does not exist" |

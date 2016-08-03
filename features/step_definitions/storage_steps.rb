@@ -1,3 +1,3 @@
 Given(/^the storage path '(.*)' exists$/) do |path|
-  pending
+  PathTranslator::RootSet[:storage].ensure_local_path(path)
 end
