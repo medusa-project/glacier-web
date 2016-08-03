@@ -13,6 +13,7 @@ class RootsController < ApplicationController
     path = params[:path]
     render 'create_exists' and return if @root = Root.find_by(path: path)
     render 'create_no_directory' and return unless PathTranslator::RootSet[:storage].exist?(path)
+    @root = Root.create(path: path)
   end
 
 end

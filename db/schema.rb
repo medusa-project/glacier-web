@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160802162850) do
+ActiveRecord::Schema.define(version: 20160803180204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,15 @@ ActiveRecord::Schema.define(version: 20160802162850) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
 
+  create_table "job_root_backups", force: :cascade do |t|
+    t.integer  "root_id"
+    t.string   "status",     default: "start", null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["root_id"], name: "index_job_root_backups_on_root_id", unique: true, using: :btree
+    t.index ["status"], name: "index_job_root_backups_on_status", using: :btree
+  end
+
   create_table "roots", force: :cascade do |t|
     t.string   "path",       null: false
     t.datetime "created_at", null: false
@@ -47,4 +56,5 @@ ActiveRecord::Schema.define(version: 20160802162850) do
   end
 
   add_foreign_key "archives", "roots"
+  add_foreign_key "job_root_backups", "roots"
 end
