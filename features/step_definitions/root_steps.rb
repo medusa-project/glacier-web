@@ -1,3 +1,5 @@
+require 'fileutils'
+
 When(/^I request the list of roots$/) do
   visit roots_path
 end
@@ -20,3 +22,41 @@ end
 When(/^I create a root with path '(.*)'$/) do |path|
   page.driver.post roots_path, path: path
 end
+
+
+And(/^the root with path '(.*)' has a backup job in state '(.*)'$/) do |path, state|
+  root = Root.find_by(path: path)
+  backup_job = root.job_root_backup || root.create_job_root_backup(state: state)
+  backup_job.state = state
+  backup_job.save!
+end
+
+And(/^the root with path '(.*)' has manifest '(.*)' and file information:$/) do |path, name, table|
+  root = Root.find_by(path: path)
+  root.path_translator_root.ensure_local_path_to('')
+  job = root.job_root_backup
+  job.manifest = name
+  job.save!
+  # table is a table.hashes.keys # => [:path, :size, :fs_mtime, :db_mtime]
+  File.open(PathTranslator::RootSet[:manifests].local_path_to(name), 'w') do |manifest|
+    table.hashes.each do |hash|
+      if hash[:db_mtime].present?
+        root.file_infos.create!(path: hash[:path], size: hash[:size], mtime: hash[:db_mtime],
+                                deleted: false, needs_archiving: false)
+      end
+      if hash[:fs_mtime].present?
+        manifest.puts "#{hash[:path]} #{hash[:size]} #{hash[:fs_mtime]}"
+      end
+    end
+  end
+end
+
+When(/^I process the manifest for the backup job for the root with path '(.*)'$/) do |path|
+  root = Root.find_by(path: path)
+  root.job_root_backup.process_process_manifest
+end
+
+Then(/^the backup job for the root with path '(.*)' should be in state '(.*)'$/) do |path, state|
+  expect(Root.find_by(path: path).job_root_backup.state).to eq(state)
+end
+

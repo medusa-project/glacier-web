@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160803180204) do
+ActiveRecord::Schema.define(version: 20160803214759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,13 +39,31 @@ ActiveRecord::Schema.define(version: 20160803180204) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
 
+  create_table "file_infos", force: :cascade do |t|
+    t.integer  "root_id"
+    t.text     "path",                            null: false
+    t.decimal  "size",                            null: false
+    t.integer  "mtime",                           null: false
+    t.boolean  "needs_archiving", default: true,  null: false
+    t.boolean  "deleted",         default: false, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.index ["deleted"], name: "index_file_infos_on_deleted", using: :btree
+    t.index ["needs_archiving"], name: "index_file_infos_on_needs_archiving", using: :btree
+    t.index ["path"], name: "index_file_infos_on_path", using: :btree
+    t.index ["root_id", "path"], name: "index_file_infos_on_root_id_and_path", unique: true, using: :btree
+    t.index ["root_id"], name: "index_file_infos_on_root_id", using: :btree
+  end
+
   create_table "job_root_backups", force: :cascade do |t|
     t.integer  "root_id"
-    t.string   "status",     default: "start", null: false
+    t.string   "state",      default: "start", null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.string   "manifest"
+    t.index ["manifest"], name: "index_job_root_backups_on_manifest", unique: true, using: :btree
     t.index ["root_id"], name: "index_job_root_backups_on_root_id", unique: true, using: :btree
-    t.index ["status"], name: "index_job_root_backups_on_status", using: :btree
+    t.index ["state"], name: "index_job_root_backups_on_state", using: :btree
   end
 
   create_table "roots", force: :cascade do |t|
@@ -56,5 +74,6 @@ ActiveRecord::Schema.define(version: 20160803180204) do
   end
 
   add_foreign_key "archives", "roots"
+  add_foreign_key "file_infos", "roots"
   add_foreign_key "job_root_backups", "roots"
 end

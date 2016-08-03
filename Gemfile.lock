@@ -1,8 +1,8 @@
 GIT
   remote: git@github.com:medusa-project/path_translator.git
-  revision: e4b8cdff82014fb65b9ac727b2441abd89fd6fac
+  revision: bd867758c819d339e1dcc56cc7f43fd3c098dca5
   specs:
-    path_translator (1.0.1)
+    path_translator (1.0.4)
 
 GEM
   remote: https://rubygems.org/
