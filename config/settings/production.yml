@@ -1,0 +1,5 @@
+#NOTE: You'll probably want to set much of this in ./production.local.yml and have capistrano link that in
+#path to main storage
+storage_path: /path/to/main/storage
+#path the directory where manifests will be passed back and forth with glacier-fs
+manifests_path: /path/to/manifest/storage

@@ -1,0 +1,2 @@
+storage_root: <%= File.join(Rails.root, 'tmp', 'test_storage' %>
+manifests_root: <%= File.join(Rails.root, 'tmp', 'test_manifests' %>
