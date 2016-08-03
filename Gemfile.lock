@@ -1,3 +1,9 @@
+GIT
+  remote: git@github.com:medusa-project/path_translator.git
+  revision: e4b8cdff82014fb65b9ac727b2441abd89fd6fac
+  specs:
+    path_translator (1.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -53,6 +59,9 @@ GEM
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
     concurrent-ruby (1.0.2)
+    config (1.2.1)
+      activesupport (>= 3.0)
+      deep_merge (~> 1.0, >= 1.0.1)
     cucumber (2.4.0)
       builder (>= 2.1.2)
       cucumber-core (~> 1.5.0)
@@ -74,6 +83,7 @@ GEM
       daemons
       multi_json (~> 1.0)
     database_cleaner (1.5.3)
+    deep_merge (1.1.1)
     delayed_job (4.1.2)
       activesupport (>= 3.0, < 5.1)
     delayed_job_active_record (4.1.1)
@@ -202,6 +212,7 @@ DEPENDENCIES
   bunny
   byebug
   capybara
+  config
   cucumber-rails
   daemons
   daemons-rails
@@ -212,6 +223,7 @@ DEPENDENCIES
   json_spec
   listen (~> 3.0.5)
   passenger
+  path_translator!
   pg (~> 0.18)
   rails (~> 5.0.0)
   rspec-rails
