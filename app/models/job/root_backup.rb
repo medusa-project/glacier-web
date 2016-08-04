@@ -82,9 +82,13 @@ For our largest current file group it may take a few GB
 just to hold the path set, not to mention the time to
 do the file_info queries and the updates.
 Very rough estimates for 7000000 records using naive AR
-read time ~ ?
-create time ~ 10+ hours
-update time ~ ?
+read time ~ 1 hour
+create time ~ 10 hours
+update time ~ 6 hours
+For contrast using copy I got about 10 minutes using a similar
+test to do the create. Doing it without the index and then indexing was more
+like 0.5m + 4m. Creating the CSV would take a
+few more minutes. Regardless, much better.
 Now, after the first time probably not too many creates or updates
 will be done. But still...
 However, we should be able to do the necessary operations
@@ -111,11 +115,6 @@ End transaction
 
 We might make an ERB or whatever template that we can insert things like the
 root_id into and feed that directly into pgsql. Or we could just make
-the statements in code and execute them directly via ruby. That might
-be easiest (and would avoid having to deal with the credentials). Doing
-the copy would still need that I think, though.
+the statements in code and execute them directly via ruby.
 
-One issue regardless is that we need to extract db credentials to do this.
-We can parse them from database.yml if needed, but that is
-a bit annoying.
 =end
