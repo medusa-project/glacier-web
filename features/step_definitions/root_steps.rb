@@ -42,7 +42,7 @@ And(/^the root with path '(.*)' has manifest '(.*)' and file information:$/) do 
     table.hashes.each do |hash|
       if hash[:db_mtime].present?
         root.file_infos.create!(path: hash[:path], size: hash[:size], mtime: hash[:db_mtime],
-                                deleted: false, needs_archiving: false)
+                                deleted: hash[:deleted], needs_archiving: false)
       end
       if hash[:fs_mtime].present?
         manifest.puts "#{hash[:path]} #{hash[:size]} #{hash[:fs_mtime]}"
