@@ -22,6 +22,6 @@ Feature: Process manifest
       | path               | mtime | needs_archiving | deleted |
       | unchanged          | 1     | false           | false   |
       | changed            | 2     | true            | false   |
-      | new                | 3     | true            | false   |
       | deleted            | 2     | false           | true    |
+      | new                | 3     | true            | false   |
       | previously_deleted | 4     | true            | false   |

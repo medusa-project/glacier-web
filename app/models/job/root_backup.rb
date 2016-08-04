@@ -1,4 +1,4 @@
-require 'set'
+require 'csv'
 class Job::RootBackup < ApplicationRecord
   belongs_to :root
 
@@ -13,7 +13,7 @@ class Job::RootBackup < ApplicationRecord
   #TODO - refactor to make nicer
   #TODO - this may need work for efficiency for large roots
   #See the end of this file for an idea
-  def process_process_manifest
+  def process_process_manifest_old
     #paths currently in the database
     existing_paths = root.file_infos.pluck(:path).to_set
     with_manifest_data do |path, size, mtime|
@@ -50,7 +50,110 @@ class Job::RootBackup < ApplicationRecord
     save!
   end
 
+  def process_process_manifest
+    create_temp_table
+    copy_manifest
+    augment_temp_table
+    update_changed_and_recreated
+    insert_new
+    update_deleted
+    drop_temp_table
+    remove_manifest
+    self.state = 'create_archives'
+    save!
+  end
+
   protected
+
+  def temp_table_name
+    "temp_file_info_#{id}"
+  end
+
+  def csv_file_name
+    File.join(Dir.tmpdir, "manifest_#{id}.csv")
+  end
+
+  def connection
+    self.class.connection
+  end
+
+  def create_temp_table
+    drop_temp_table
+    connection.create_table temp_table_name do |t|
+      t.text :path
+      t.decimal :ext_size
+      t.integer :ext_mtime
+    end
+  end
+
+  def copy_manifest
+    CSV.open(csv_file_name, 'w') do |csv|
+      with_manifest_data do |path, size, mtime|
+        csv << [path, size, mtime]
+      end
+    end
+    sql = %Q(COPY #{temp_table_name} (path, ext_size, ext_mtime) FROM '#{csv_file_name}' WITH CSV)
+    connection.execute(sql)
+  ensure
+    File.delete(csv_file_name) if File.exist?(csv_file_name)
+  end
+
+  def augment_temp_table
+    connection.add_index temp_table_name, :path
+    connection.add_column temp_table_name, :int_mtime, :integer
+    connection.add_column temp_table_name, :int_deleted, :boolean
+    #TODO insert information from file_infos
+    sql = <<SQL
+      UPDATE #{temp_table_name} T
+      SET int_mtime = F.mtime, int_deleted = F.deleted
+      FROM file_infos F
+      WHERE F.root_id = #{root.id}
+      AND F.path = T.path
+      ;
+      ANALYZE #{temp_table_name}
+SQL
+    connection.execute(sql)
+  end
+
+  def update_changed_and_recreated
+    sql = <<SQL
+      UPDATE file_infos F
+      SET mtime = T.ext_mtime, size = T.ext_size,
+          deleted = false, needs_archiving = true
+      FROM #{temp_table_name} T
+      WHERE F.root_id = #{root.id}
+      AND F.path = T.path
+      AND T.int_mtime IS NOT NULL
+      AND (T.int_deleted = true OR T.int_mtime != T.ext_mtime)
+SQL
+    connection.execute(sql)
+  end
+
+  def insert_new
+    sql = <<SQL
+      INSERT INTO file_infos (root_id, path, size, mtime, needs_archiving, deleted, created_at, updated_at)
+      SELECT #{root.id}, F.path, F.ext_size, F.ext_mtime, true, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+      FROM #{temp_table_name} F
+      WHERE f.int_mtime IS NULL
+SQL
+    connection.execute(sql)
+  end
+
+  def update_deleted
+    sql = <<SQL
+      UPDATE file_infos F
+      SET deleted = true, needs_archiving = false
+      FROM (file_infos FI LEFT JOIN #{temp_table_name} TI ON FI.path = TI.path )
+      WHERE F.root_id = #{root.id}
+      AND F.path = FI.path
+      AND TI.ext_size IS NULL
+SQL
+    connection.execute(sql)
+  end
+
+  def drop_temp_table
+    connection.drop_table temp_table_name, if_exists: true
+  end
 
   #TODO perhaps archive these instead of removing them
   def remove_manifest
