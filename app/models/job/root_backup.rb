@@ -23,10 +23,11 @@ class Job::RootBackup < ApplicationRecord
     update_changed_and_recreated
     insert_new
     update_deleted
-    drop_temp_table
     remove_manifest
     self.state = 'create_archives'
     save!
+  ensure
+    drop_temp_table
   end
 
   protected
