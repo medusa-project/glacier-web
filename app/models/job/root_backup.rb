@@ -68,11 +68,12 @@ class Job::RootBackup < ApplicationRecord
   def augment_temp_table
     connection.add_index temp_table_name, :path
     connection.add_column temp_table_name, :int_mtime, :integer
+    connection.add_column temp_table_name, :int_size, :decimal
     connection.add_column temp_table_name, :int_deleted, :boolean
     #TODO insert information from file_infos
     sql = <<SQL
       UPDATE #{temp_table_name} T
-      SET int_mtime = F.mtime, int_deleted = F.deleted
+      SET int_mtime = F.mtime, int_size = F.size, int_deleted = F.deleted
       FROM file_infos F
       WHERE F.root_id = #{root.id}
       AND F.path = T.path
