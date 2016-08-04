@@ -70,7 +70,6 @@ class Job::RootBackup < ApplicationRecord
     connection.add_column temp_table_name, :int_mtime, :integer
     connection.add_column temp_table_name, :int_size, :decimal
     connection.add_column temp_table_name, :int_deleted, :boolean
-    #TODO insert information from file_infos
     sql = <<SQL
       UPDATE #{temp_table_name} T
       SET int_mtime = F.mtime, int_size = F.size, int_deleted = F.deleted
