@@ -13,8 +13,7 @@ Feature: Process manifest
       | new                | 300  | 3        |          |         |
       | deleted            | 400  |          | 2        | false   |
       | previously_deleted | 500  | 4        | 2        | true    |
-
-  @current
+    
   Scenario: Process manifest
     When I process the manifest for the backup job for the root with path '123/456'
     Then the backup job for the root with path '123/456' should be in state 'create_archives'
