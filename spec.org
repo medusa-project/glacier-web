@@ -1,0 +1,70 @@
+* Actors
+** CLIENT 
+   refers to an outside entity interacting with the system via
+   http or amqp
+** SERVER 
+   refers to the main rails app for managing the file/backup 
+   database, dealing with the CLIENT. Uses http to interact with the CLIENT.
+   Uses amqp to interact with the FS-INTERACTOR. (ruby/postgres/rails-api)
+** FS-INTERACTOR (FSI)
+   refers to the secondary rails app that has direct access 
+   to the file system and runs the AMAZON operations (jruby/derby/rails-api)
+** AMAZON
+   the external Amazon glacier system
+
+* Scenarios
+** CLIENT getting information
+*** DONE CLIENT asks SERVER for list of roots
+*** DONE CLIENT asks SERVER for list of all backups
+*** DONE CLIENT asks SERVER for list of backups for a given root
+*** CLIENT asks SERVER for list of backups for a given root and file
+*** CLIENT asks SERVER for backups filtered by pending/running/finished/etc.
+** CLIENT requesting action
+*** CLIENT asks SERVER to add a root
+    return root information, creating if necessary. Say in a message field
+    if it existed or was created.
+*** CLIENT asks SERVER to delete a root (?)
+*** CLIENT asks SERVER to backup a specific root
+*** CLIENT asks SERVER to remove specific files
+** FSI interacting with AMAZON
+*** FSI uploads a tar to AMAZON
+*** FSI deletes an archive from AMAZON
+*** FSI retrieves an archive from AMAZON
+** SERVER interacting with FSI
+*** SERVER requests full file tree for a root
+*** SERVER provides a manifest and requests tarball and upload for a root
+** SERVER internal actions
+*** SERVER converts file manifest and existing file information into backups
+*** SERVER manages queue of backups in various states
+*** SERVER runs backups in appropriate states
+*** SERVER extracts files from archives
+*** SERVER recreates root from archives
+** FSI internal actions
+*** FSI creates manifest for a given root
+*** FSI creates a tar for a given manifest
+* Models
+** SERVER
+*** Root
+**** has many FileObjects
+**** has many Archives
+*** Archive
+**** has many FileObjects
+**** belongs to Root
+**** has one ArchiveBackupJob
+*** FileObject
+**** belongs to Root
+**** has many archives
+*** ArchiveBackupJob
+**** belongs to Archive
+*** RootBackupJob
+**** belongs to Root
+** FSI (how to manage? sqlite, use timeout value in config?; derby?)
+*** ManifestJob
+*** TarJob
+*** UploadJob
+* Formats
+** FSI file info manifest
+   Name Size Last_Modified(s since epoch)
+** SERVER tar creation manifest
+   NAME
+
