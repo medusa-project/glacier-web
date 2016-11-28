@@ -31,8 +31,8 @@
 *** CLIENT asks SERVER to remove specific files
     should find archives with files, set up new backup(s) to ensure that
     no good files in those are not backed up, then remove archives with
-    bad files
-** FSI interacting with AMAZON
+    bad files. This should probably be its own Job type.
+** FSI interacting with AMAZON (c.f. existing code for using amazon jar)
 *** FSI uploads a tar to AMAZON
 *** FSI deletes an archive from AMAZON
 *** FSI retrieves an archive from AMAZON
