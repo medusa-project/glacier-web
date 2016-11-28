@@ -15,8 +15,12 @@ Given(/^the root with path '(.*)' has archives with fields:$/) do |path, table|
   end
 end
 
-When(/^I request the list of archives for the root with path '(.*)'$/) do |path|
+When(/^I request the list of archives for the root with path '([^']*)'$/) do |path|
   visit archives_roots_path(path: path)
+end
+
+When(/^I request the list of archives for the root with path '(.*)' and file with path '(.*)'$/) do |root_path, file_path|
+  visit archives_for_file_roots_path(root_path: root_path, file_path: file_path)
 end
 
 When(/^I create a root with path '(.*)'$/) do |path|
@@ -58,5 +62,13 @@ end
 
 Then(/^the backup job for the root with path '(.*)' should be in state '(.*)'$/) do |path, state|
   expect(Root.find_by(path: path).job_root_backup.state).to eq(state)
+end
+
+
+And(/^the root with path '(.*)' has files with fields:$/) do |path, table|
+  root = Root.find_by(path: path)
+  table.hashes.each do |file_info|
+    FactoryGirl.create(:file_info, file_info.merge(root_id: root.id))
+  end
 end
 

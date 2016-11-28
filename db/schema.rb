@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160803214759) do
+ActiveRecord::Schema.define(version: 20161128202258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "archive_file_info_joins", force: :cascade do |t|
+    t.integer "archive_id",   null: false
+    t.integer "file_info_id", null: false
+    t.index ["archive_id", "file_info_id"], name: "index_archive_file_info_joins_on_archive_id_and_file_info_id", unique: true, using: :btree
+    t.index ["file_info_id"], name: "index_archive_file_info_joins_on_file_info_id", using: :btree
+  end
 
   create_table "archives", force: :cascade do |t|
     t.integer  "root_id"
@@ -73,6 +80,8 @@ ActiveRecord::Schema.define(version: 20160803214759) do
     t.index ["path"], name: "index_roots_on_path", unique: true, using: :btree
   end
 
+  add_foreign_key "archive_file_info_joins", "archives"
+  add_foreign_key "archive_file_info_joins", "file_infos"
   add_foreign_key "archives", "roots"
   add_foreign_key "file_infos", "roots"
   add_foreign_key "job_root_backups", "roots"

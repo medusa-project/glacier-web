@@ -11,13 +11,12 @@
    to the file system and runs the AMAZON operations (jruby/derby/rails-api)
 ** AMAZON
    the external Amazon glacier system
-
 * Scenarios
 ** CLIENT getting information
 *** DONE CLIENT asks SERVER for list of roots
 *** DONE CLIENT asks SERVER for list of all backups
 *** DONE CLIENT asks SERVER for list of backups for a given root
-*** CLIENT asks SERVER for list of backups for a given root and file
+*** DONE CLIENT asks SERVER for list of backups for a given root and file
 *** CLIENT asks SERVER for backups filtered by pending/running/finished/etc.
 ** CLIENT requesting action
 *** CLIENT asks SERVER to add a root
