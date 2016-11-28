@@ -18,26 +18,34 @@
 *** DONE CLIENT asks SERVER for list of backups for a given root
 *** DONE CLIENT asks SERVER for list of backups for a given root and file
 *** CLIENT asks SERVER for backups filtered by pending/running/finished/etc.
+    need to specify better - this probably needs to wait until we have the
+    concept of backing up archives instead of only roots (which we will)
 ** CLIENT requesting action
-*** CLIENT asks SERVER to add a root
+*** DONE CLIENT asks SERVER to add a root
     return root information, creating if necessary. Say in a message field
     if it existed or was created.
 *** CLIENT asks SERVER to delete a root (?)
-*** CLIENT asks SERVER to backup a specific root
+    leave unimplemented for now
+*** TODO CLIENT asks SERVER to backup a specific root
+    should result in a root_backup job being created and/or promoted
 *** CLIENT asks SERVER to remove specific files
+    should find archives with files, set up new backup(s) to ensure that
+    no good files in those are not backed up, then remove archives with
+    bad files
 ** FSI interacting with AMAZON
 *** FSI uploads a tar to AMAZON
 *** FSI deletes an archive from AMAZON
 *** FSI retrieves an archive from AMAZON
 ** SERVER interacting with FSI
-*** SERVER requests full file tree for a root
-*** SERVER provides a manifest and requests tarball and upload for a root
+*** TODO SERVER requests full file tree for a root*
+*** TODO SERVER provides a manifest and requests tarball and upload for a root
 ** SERVER internal actions
-*** SERVER converts file manifest and existing file information into backups
-*** SERVER manages queue of backups in various states
-*** SERVER runs backups in appropriate states
-*** SERVER extracts files from archives
-*** SERVER recreates root from archives
+*** TODO SERVER converts file manifest and existing file information into backups
+*** TODO SERVER manages queue of backups in various states
+*** TODO SERVER runs backups in appropriate states
+*** TODO SERVER extracts files from archives
+*** TODO SERVER recreates root from archives
+*** SERVER periodically checks roots to see if backup is required
 ** FSI internal actions
 *** FSI creates manifest for a given root
 *** FSI creates a tar for a given manifest
