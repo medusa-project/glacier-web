@@ -26,7 +26,7 @@
     if it existed or was created.
 *** CLIENT asks SERVER to delete a root (?)
     leave unimplemented for now
-*** TODO CLIENT asks SERVER to backup a specific root
+*** DONE CLIENT asks SERVER to backup a specific root
     should result in a root_backup job being created and/or promoted
 *** CLIENT asks SERVER to remove specific files
     should find archives with files, set up new backup(s) to ensure that
@@ -37,8 +37,10 @@
 *** FSI deletes an archive from AMAZON
 *** FSI retrieves an archive from AMAZON
 ** SERVER interacting with FSI
-*** TODO SERVER requests full file tree for a root*
-*** TODO SERVER provides a manifest and requests tarball and upload for a root
+*** TODO SERVER requests full file tree for a root
+*** FSI notifies of manifest creation for a root
+*** TODO SERVER provides a manifest and requests tarball and upload for an archive
+*** FSI notifies of upload for an archive
 ** SERVER internal actions
 *** TODO SERVER converts file manifest and existing file information into backups
 *** TODO SERVER manages queue of backups in various states
