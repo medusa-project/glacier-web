@@ -1,4 +1,4 @@
-class Job::ArchiveBackup < ApplicationRecord
+class Job::ArchiveBackup < Job::Base
   belongs_to :archive
 
   STATES = %w(start finish)
@@ -9,17 +9,10 @@ class Job::ArchiveBackup < ApplicationRecord
     job = self.create!(archive_id: archive.id, state: 'start')
     job.put_in_queue
   end
-
-  def put_in_queue(new_state: nil)
-    if new_state
-      self.state = new_state
-      self.save!
-    end
-    Delayed::Job.enqueue(self, queue: 'archive_backup')
+  
+  def self.queue
+    'archive_backup'
   end
 
-  def perform
-    call("perform_#{self.state}")
-  end
 
 end

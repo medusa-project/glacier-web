@@ -21,10 +21,10 @@ Given(/^there is no backup job for the root with path '(.*)'$/) do |path|
 end
 
 When(/^I process the manifest for the backup job for the root with path '(.*)'$/) do |path|
-  Root.find_by(path: path).job_root_backup.process_process_manifest
+  Root.find_by(path: path).job_root_backup.perform_process_manifest
 end
 
 When(/^I create archives for the backup job for the root with path '(.*)'$/) do |path|
-  Root.find_by(path: path).job_root_backup.process_create_archives
+  Root.find_by(path: path).job_root_backup.perform_create_archives
 end
 

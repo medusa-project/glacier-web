@@ -1,5 +1,5 @@
 require 'csv'
-class Job::RootBackup < ApplicationRecord
+class Job::RootBackup < Job::Base
   belongs_to :root
 
   STATES = %w(start request_manifest wait_manifest process_manifest
@@ -14,20 +14,8 @@ class Job::RootBackup < ApplicationRecord
     job.put_in_queue
   end
 
-  def put_in_queue(new_state: nil)
-    if new_state
-      self.state = new_state
-      self.save!
-    end
-    Delayed::Job.enqueue(self, queue: 'root_backup')
-  end
-
-  def perform
-    process
-  end
-
-  def process
-    call("process_#{self.state}")
+  def self.queue
+    'root_backup'
   end
 
   #Basic idea:
@@ -36,7 +24,7 @@ class Job::RootBackup < ApplicationRecord
   #If the file was in the manifest but not in the file info table then we add it
   #If the file is in the file info table but not the manifest then we mark it as deleted
   #This method is just a way of doing that efficiently using the database.
-  def process_process_manifest
+  def perform_process_manifest
     create_temp_table
     copy_manifest
     augment_temp_table
@@ -49,7 +37,7 @@ class Job::RootBackup < ApplicationRecord
     drop_temp_table
   end
 
-  def process_create_archives
+  def perform_create_archives
     archives = Array.new
     fileset = Array.new
     total_size = 0
@@ -68,7 +56,11 @@ class Job::RootBackup < ApplicationRecord
     put_in_queue(new_state: 'finish')
   end
 
-  def process_finish
+  def perform_start
+    put_in_queue(new_state: 'request_manifest')
+  end
+
+  def perform_finish
     self.destroy!
   end
 
