@@ -38,11 +38,14 @@
 *** FSI retrieves an archive from AMAZON
 ** SERVER interacting with FSI
 *** TODO SERVER requests full file tree for a root
+*** FSI receives request for full file tree for a root
 *** FSI notifies of manifest creation for a root
 *** TODO SERVER provides a manifest and requests tarball and upload for an archive
+*** FSI receives manifest for upload of an archive
 *** FSI notifies of upload for an archive
 ** SERVER internal actions
 *** TODO SERVER converts file manifest and existing file information into backups
+*** DONE SERVER uses root/file info information to create archives for backup
 *** TODO SERVER manages queue of backups in various states
 *** TODO SERVER runs backups in appropriate states
 *** TODO SERVER extracts files from archives
