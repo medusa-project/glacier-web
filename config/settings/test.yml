@@ -4,3 +4,8 @@ manifests_root: <%= File.join(Rails.root, 'tmp', 'test_manifests') %>
 #a multi-file one can double this, so to about half the desired limit
 #The tests assume an archive size limit of 10000
 archive_size_limit: 10000
+amqp:
+  outgoing_queue: amazon_web_to_fs
+  incoming_queue: amazon_fs_to_web
+  connection:
+    host: localhost

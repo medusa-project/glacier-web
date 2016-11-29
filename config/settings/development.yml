@@ -3,3 +3,8 @@ manifests_root: <%= File.join(Rails.root, 'tmp', 'development_manifests') %>
 #Note that this is not a hard limit: a single file archive can be any size and
 #a multi-file one can double this
 archive_size_limit: <%= 100.megabytes %>
+amqp:
+  outgoing_queue: amazon_web_to_fs
+  incoming_queue: amazon_fs_to_web
+  connection:
+    host: localhost

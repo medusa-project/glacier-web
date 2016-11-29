@@ -44,7 +44,7 @@
 *** FSI receives manifest for upload of an archive
 *** FSI notifies of upload for an archive
 ** SERVER internal actions
-*** TODO SERVER converts file manifest and existing file information into backups
+*** DONE SERVER converts file manifest into file info updates and creations
 *** DONE SERVER uses root/file info information to create archives for backup
 *** TODO SERVER manages queue of backups in various states
 *** TODO SERVER runs backups in appropriate states

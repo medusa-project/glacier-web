@@ -9,10 +9,9 @@ class Job::ArchiveBackup < Job::Base
     job = self.create!(archive_id: archive.id, state: 'start')
     job.put_in_queue
   end
-  
+
   def self.queue
     'archive_backup'
   end
-
 
 end
