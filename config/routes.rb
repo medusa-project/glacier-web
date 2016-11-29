@@ -5,5 +5,8 @@ Rails.application.routes.draw do
       get :archives_for_file, on: :collection
     end
     resources :archives
+    namespace :job do
+      resources :root_backups, only: :create
+    end
   end
 end

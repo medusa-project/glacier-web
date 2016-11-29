@@ -5,6 +5,14 @@ class Job::RootBackup < ApplicationRecord
   STATES = %w(start request_manifest wait_manifest process_manifest
     create_archives finish)
   validates_inclusion_of :state, in: STATES
+  PRIORITIES = %w(normal high)
+  validates_inclusion_of :priority, in: PRIORITIES
+
+
+  def self.create_for(root, priority: 'normal')
+    self.create!(root: root, priority: priority)
+    #TODO presumably here we will enqueue the job
+  end
 
   def process
     call("process_#{self.state}")

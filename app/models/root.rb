@@ -6,7 +6,7 @@ class Root < ApplicationRecord
   after_create :create_initial_backup_job
 
   def create_initial_backup_job
-    self.create_job_root_backup!
+    Job::RootBackup.create_for(self)
   end
 
   def path_translator_root
