@@ -1,7 +1,7 @@
 class Job::ArchiveBackup < Job::Base
   belongs_to :archive
 
-  STATES = %w(start finish)
+  STATES = %w(start create_manifest send_request await_response process_response finish)
   validates_inclusion_of :state, in: STATES, allow_blank: false
   validates_uniqueness_of :archive_id
 
