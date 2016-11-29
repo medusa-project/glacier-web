@@ -4,14 +4,26 @@ class Job::RootBackup < ApplicationRecord
 
   STATES = %w(start request_manifest wait_manifest process_manifest
     create_archives finish)
-  validates_inclusion_of :state, in: STATES
+  validates_inclusion_of :state, in: STATES, allow_blank: false
   PRIORITIES = %w(normal high)
-  validates_inclusion_of :priority, in: PRIORITIES
+  validates_inclusion_of :priority, in: PRIORITIES, allow_blank: false
 
 
   def self.create_for(root, priority: 'normal')
-    self.create!(root: root, priority: priority)
-    #TODO presumably here we will enqueue the job
+    job = self.create!(root: root, priority: priority, state: 'start')
+    job.put_in_queue
+  end
+
+  def put_in_queue(new_state: nil)
+    if new_state
+      self.state = new_state
+      self.save!
+    end
+    Delayed::Job.enqueue(self, queue: 'root_backup')
+  end
+
+  def perform
+    process
   end
 
   def process
@@ -32,10 +44,32 @@ class Job::RootBackup < ApplicationRecord
     insert_new
     update_deleted
     remove_manifest
-    self.state = 'create_archives'
-    save!
+    put_in_queue(new_state: 'create_archives')
   ensure
     drop_temp_table
+  end
+
+  def process_create_archives
+    archives = Array.new
+    fileset = Array.new
+    total_size = 0
+    x = root.file_infos.to_a
+    root.file_infos.where(needs_archiving: true).order('size desc').each_instance do |file|
+      fileset << file.id
+      total_size += file.size
+      if total_size > Settings.archive_size_limit
+        archives << create_archive(fileset, total_size)
+        fileset = Array.new
+        total_size = 0
+      end
+    end
+    archives << create_archive(fileset, total_size) if fileset.present?
+    archives.each { |archive| Job::ArchiveBackup.create_for(archive) }
+    put_in_queue(new_state: 'finish')
+  end
+
+  def process_finish
+    self.destroy!
   end
 
   protected
@@ -148,6 +182,14 @@ SQL
         line.chomp.match(/^(.*)\s+(\d+)\s+(\d+)$/)
         yield $1, $2.to_i, $3.to_i
       end
+    end
+  end
+
+  #fileset is an array of file info ids
+  def create_archive(fileset, size)
+    root.archives.create!(count: fileset.count, size: size).tap do |archive|
+      archive.file_info_ids = fileset
+      archive.file_infos.update_all(needs_archiving: false)
     end
   end
 

@@ -1,4 +1,4 @@
-class ArchiveFileInfoJoin < ActiveRecord::Base
+class ArchiveFileInfoJoin < ApplicationRecord
   belongs_to :archive
   belongs_to :file_info
 

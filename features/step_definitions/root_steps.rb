@@ -55,11 +55,6 @@ And(/^the root with path '(.*)' has manifest '(.*)' and file information:$/) do 
   end
 end
 
-When(/^I process the manifest for the backup job for the root with path '(.*)'$/) do |path|
-  root = Root.find_by(path: path)
-  root.job_root_backup.process_process_manifest
-end
-
 Then(/^the backup job for the root with path '(.*)' should be in state '(.*)'$/) do |path, state|
   expect(Root.find_by(path: path).job_root_backup.state).to eq(state)
 end
@@ -72,3 +67,10 @@ And(/^the root with path '(.*)' has files with fields:$/) do |path, table|
   end
 end
 
+
+Then(/^the root with path '(.*)' should have archives with fields:$/) do |path, table|
+  root = Root.find_by(path: path)
+  table.hashes.each do |hash|
+    expect(root.archives.find_by(hash)).to be_truthy
+  end
+end

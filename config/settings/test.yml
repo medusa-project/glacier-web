@@ -1,2 +1,6 @@
 storage_root: <%= File.join(Rails.root, 'tmp', 'test_storage') %>
 manifests_root: <%= File.join(Rails.root, 'tmp', 'test_manifests') %>
+#Note that this is not a hard limit: a single file archive can be any size and
+#a multi-file one can double this, so to about half the desired limit
+#The tests assume an archive size limit of 10000
+archive_size_limit: 10000
