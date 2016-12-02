@@ -11,7 +11,7 @@ class Job::Base < ApplicationRecord
       self.state = new_state
       self.save!
     end
-    Delayed::Job.enqueue(self, self.queue)
+    Delayed::Job.enqueue(self, queue: self.queue)
   end
 
   def perform
