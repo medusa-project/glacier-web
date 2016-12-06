@@ -10,7 +10,7 @@ gem 'jbuilder'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'daemons-rails'
-gem 'bunny'
+gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
 gem 'path_translator', git: 'git@github.com:medusa-project/path_translator.git'
 gem 'config'
 
@@ -35,4 +35,7 @@ group :test do
   gem 'simplecov'
   gem 'json_spec'
   gem 'capybara'
+  gem 'capybara-email'
+  #awaiting fix on canonical bunny-mock to make the default exchange deliver messages
+  gem 'bunny-mock', git: 'git://github.com/hading/bunny-mock.git'
 end

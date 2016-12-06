@@ -10,4 +10,16 @@ class Archive < ApplicationRecord
     Job::ArchiveBackup.create_for(self)
   end
 
+  def send_backup_request_message
+    AmqpHelper::Connector[:default].send_message(Settings.amqp.outgoing_queue, backup_request_message)
+  end
+
+  def backup_request_message
+    {action: 'backup', archive_id: id, root_path: root.path, manifest_path: manifest_path}
+  end
+
+  def manifest_path
+    "archive_#{id}.txt"
+  end
+
 end

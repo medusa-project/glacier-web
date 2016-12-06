@@ -9,3 +9,6 @@ amqp:
   incoming_queue: amazon_fs_to_web
   connection:
     host: localhost
+email:
+  admin: admin@example.com
+  no_reply: no-reply@example.com

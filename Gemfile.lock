@@ -1,4 +1,19 @@
 GIT
+  remote: git://github.com/hading/bunny-mock.git
+  revision: f1bbe862760b2e1d7b354c260a93829a22ee6f9c
+  specs:
+    bunny-mock (1.5.0)
+      bunny (>= 1.7)
+
+GIT
+  remote: git://github.com/medusa-project/amqp_helper.git
+  revision: c8be2b59d662c9f7e90fe125c2c8a2fe10b0636a
+  specs:
+    amqp_helper (0.1.4)
+      bunny
+      bunny-mock
+
+GIT
   remote: git@github.com:medusa-project/path_translator.git
   revision: bd867758c819d339e1dcc56cc7f43fd3c098dca5
   specs:
@@ -48,7 +63,7 @@ GEM
     amq-protocol (2.0.1)
     arel (7.1.1)
     builder (3.2.2)
-    bunny (2.5.0)
+    bunny (2.6.1)
       amq-protocol (>= 2.0.1)
     byebug (9.0.5)
     capybara (2.7.1)
@@ -58,6 +73,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-email (2.5.0)
+      capybara (~> 2.4)
+      mail
     concurrent-ruby (1.0.2)
     config (1.2.1)
       activesupport (>= 3.0)
@@ -211,9 +229,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bunny
+  amqp_helper (~> 0.1.4)!
+  bunny-mock!
   byebug
   capybara
+  capybara-email
   config
   cucumber-rails
   daemons

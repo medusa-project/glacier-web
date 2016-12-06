@@ -81,22 +81,22 @@
    Path from root
 * AMQP messages
 ** Request FSI file info manifest for full file tree
-*** type: 'file_info"
+*** action: 'file_info"
 *** root_path
 *** manifest_path
 ** FSI completed file info manifest for full file tree
-*** type: 'file_info'
+*** action: 'file_info'
 *** root_path
 *** manifest_path
 *** status
 *** error_message
 ** Request FSI backup set of files
-*** type: 'backup'
+*** action: 'backup'
 *** root_path
 *** archive_id
 *** manifest_path
 ** FSI completed backup of set of files
-*** type: 'backup'
+*** action: 'backup'
 *** root_path
 *** archive_id
 *** manifest_path

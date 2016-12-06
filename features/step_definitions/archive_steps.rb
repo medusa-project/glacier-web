@@ -14,3 +14,7 @@ And(/^the archive with id '(.*)' contains the files with paths:$/) do |id, table
     archive.file_infos << file_info
   end
 end
+
+When(/^I run the backup job for the archive with id '(.*)'$/) do |id|
+  Archive.find(id).job_archive_backup.perform
+end

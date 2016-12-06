@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129201135) do
+ActiveRecord::Schema.define(version: 20161206191048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20161129201135) do
     t.integer  "archive_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text     "message"
     t.index ["archive_id"], name: "index_job_archive_backups_on_archive_id", using: :btree
   end
 

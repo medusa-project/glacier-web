@@ -18,7 +18,7 @@ Feature: Create archives
       | file_5         | 5000  | true            |
       | file_6         | 500   | true            |
       | file_7         | 2000  | true            |
-    When I create archives for the backup job for the root with path '123/456'
+    When I run the backup job for the root with path '123/456'
     Then the root with path '123/456' should have archives with fields:
       | count | size  |
       | 1     | 20000 |

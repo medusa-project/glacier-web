@@ -11,3 +11,11 @@ amqp:
   incoming_queue: amazon_fs_to_web
   connection:
     host: localhost
+email:
+  admin: admin@example.com
+  no_reply: no-reply@example.com
+smtp:
+  smtp_settings:
+    address: express-smtp.cites.uiuc.edu
+    domain: my.server-domain
+  web_host: "my.web.host"

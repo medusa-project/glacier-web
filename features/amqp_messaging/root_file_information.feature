@@ -20,7 +20,7 @@ Feature: AMQP messaging for file information
       | root_path     | 123/456         |
       | manifest_path | my-manifest.txt |
       | status        | success         |
-    When a file information message is read from the incoming amqp queue
+    When I process the incoming amqp queue
     Then the backup job for the root with path '123/456' should be in state 'process_manifest'
 
   Scenario: Receive error message after requesting information on a root's file tree
@@ -30,7 +30,7 @@ Feature: AMQP messaging for file information
       | manifest_path | my-manifest.txt            |
       | status        | error                      |
       | error_message | Unknown error of some kind |
-    When a file information message is read from the incoming amqp queue
+    When I process the incoming amqp queue
     Then the backup job for the root with path '123/456' should be in state 'wait_manifest'
     And the admin should receive an email matching 'Unknown error of some kind'
 

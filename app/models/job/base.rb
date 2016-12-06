@@ -15,7 +15,7 @@ class Job::Base < ApplicationRecord
   end
 
   def perform
-    call("perform_#{self.state}")
+    send("perform_#{self.state}")
   end
 
 end

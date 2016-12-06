@@ -15,7 +15,8 @@ Feature: Process manifest
       | previously_deleted | 500  | 4        | 2        | true    |
     
   Scenario: Process manifest
-    When I process the manifest for the backup job for the root with path '123/456'
+    Given the root with path '123/456' has a backup job in state 'process_manifest'
+    When I run the backup job for the root with path '123/456'
     Then the backup job for the root with path '123/456' should be in state 'create_archives'
     And there should be files with fields:
       | path               | mtime | needs_archiving | deleted |

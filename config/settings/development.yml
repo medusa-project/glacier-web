@@ -8,3 +8,11 @@ amqp:
   incoming_queue: amazon_fs_to_web
   connection:
     host: localhost
+email:
+  admin: hding2@illinois.edu
+  no_reply: no-reply@example.com
+smtp:
+  smtp_settings:
+    address: express-smtp.cites.uiuc.edu
+    domain: libstfsdg01.library.illinois.edu
+  web_host: "localhost:3000"
