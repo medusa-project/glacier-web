@@ -170,8 +170,7 @@ SQL
   end
 
   def manifest_path
-    raise RuntimeError, "Manifest not found for Job::RootBackup #{id}" unless self.manifest.present?
-    PathTranslator::RootSet[:manifests].local_path_to(manifest).tap do |manifest_file|
+    PathTranslator::RootSet[:manifests].local_path_to(root.manifest_path).tap do |manifest_file|
       raise RuntimeError, "Manifest file not found for Job::RootBackup #{id}" unless File.exist?(manifest_file)
     end
   end

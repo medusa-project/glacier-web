@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206202146) do
+ActiveRecord::Schema.define(version: 20161206211929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,10 +77,8 @@ ActiveRecord::Schema.define(version: 20161206202146) do
     t.string   "state",      default: "start", null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.string   "manifest"
     t.string   "priority",                     null: false
     t.text     "message"
-    t.index ["manifest"], name: "index_job_root_backups_on_manifest", unique: true, using: :btree
     t.index ["root_id"], name: "index_job_root_backups_on_root_id", unique: true, using: :btree
     t.index ["state"], name: "index_job_root_backups_on_state", using: :btree
   end

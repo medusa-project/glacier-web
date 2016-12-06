@@ -55,8 +55,8 @@
 *** TODO SERVER runs backups in appropriate states
 *** TODO SERVER extracts files from archives
 *** TODO SERVER recreates root from archives
-*** SERVER processes manifest created for a root
-*** SERVER processes upload notification for an archive
+*** DONE SERVER processes manifest created for a root
+*** TODO SERVER processes upload notification for an archive
 *** SERVER periodically checks roots to see if backup is required
 ** FSI internal actions
 *** FSI creates manifest for a given root
