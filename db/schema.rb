@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206211929) do
+ActiveRecord::Schema.define(version: 20161206221119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,8 +26,10 @@ ActiveRecord::Schema.define(version: 20161206211929) do
     t.integer  "root_id"
     t.integer  "count"
     t.decimal  "size"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "amazon_archive_id"
+    t.index ["amazon_archive_id"], name: "index_archives_on_amazon_archive_id", using: :btree
     t.index ["root_id"], name: "index_archives_on_root_id", using: :btree
   end
 

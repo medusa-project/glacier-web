@@ -32,4 +32,13 @@ class Job::ArchiveBackup < Job::Base
     self.destroy!
   end
 
+  def perform_process_response
+    transaction do
+      archive.amazon_archive_id = message['amazon_archive_id']
+      archive.save!
+      put_in_queue(new_state: 'finish')
+      archive.archive_manifests
+    end
+  end
+
 end

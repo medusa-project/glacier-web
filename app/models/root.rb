@@ -20,10 +20,10 @@ class Root < ApplicationRecord
   end
 
   def backup_request_message
-    {action: 'file_info', root_path: path, manifest_path: manifest_path}
+    {action: 'file_info', root_path: path, manifest_name: manifest_name}
   end
 
-  def manifest_path
+  def manifest_name
     "file_info_#{id}.txt"
   end
 

@@ -39,7 +39,7 @@ And(/^the root with path '(.*)' has db and manifest file information:$/) do |pat
   root = Root.find_by(path: path)
   root.path_translator_root.ensure_local_path_to('')
   # table is a table.hashes.keys # => [:path, :size, :fs_mtime, :db_mtime]
-  File.open(PathTranslator::RootSet[:manifests].local_path_to(root.manifest_path), 'w') do |manifest|
+  File.open(PathTranslator::RootSet[:manifests].local_path_to(root.manifest_name), 'w') do |manifest|
     table.hashes.each do |hash|
       if hash[:db_mtime].present?
         root.file_infos.create!(path: hash[:path], size: hash[:size], mtime: hash[:db_mtime],

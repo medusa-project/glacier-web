@@ -56,7 +56,7 @@
 *** TODO SERVER extracts files from archives
 *** TODO SERVER recreates root from archives
 *** DONE SERVER processes manifest created for a root
-*** TODO SERVER processes upload notification for an archive
+*** DONE SERVER processes upload notification for an archive
 *** SERVER periodically checks roots to see if backup is required
 ** FSI internal actions
 *** FSI creates manifest for a given root
@@ -90,24 +90,24 @@
 ** Request FSI file info manifest for full file tree
 *** action: 'file_info"
 *** root_path
-*** manifest_path
+*** manifest_name
 ** FSI completed file info manifest for full file tree
 *** action: 'file_info'
 *** root_path
-*** manifest_path
+*** manifest_name
 *** status
 *** error_message
 ** Request FSI backup set of files
 *** action: 'backup'
 *** root_path
 *** archive_id
-*** manifest_path
+*** manifest_name
 ** FSI completed backup of set of files
 *** action: 'backup'
 *** root_path
 *** archive_id
-*** manifest_path
-*** bag_manifest_path
+*** manifest_name
+*** bag_manifest_name
 *** status
 *** error_message
 *** amazon_archive_id

@@ -1,4 +1,4 @@
-Feature: Process manifest
+Feature: Process file info manifest
   In order to update the list of files for a root
   As the system
   I want to be able to process a manifest file for the current file system state

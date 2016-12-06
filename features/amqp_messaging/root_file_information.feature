@@ -14,13 +14,13 @@ Feature: AMQP messaging for file information
     Then the outgoing amqp queue should have a message with fields:
       | action        | file_info       |
       | root_path     | 123/456         |
-      | manifest_path | file_info_1.txt |
+      | manifest_name | file_info_1.txt |
 
   Scenario: Receive message with information on a root's file tree
     Given the incoming amqp queue has a message with fields:
       | action        | file_info       |
       | root_path     | 123/456         |
-      | manifest_path | file_info_1.txt |
+      | manifest_name | file_info_1.txt |
       | status        | success         |
     And the root with path '123/456' has a backup job in state 'wait_manifest'
     When I process the incoming amqp queue
@@ -31,7 +31,7 @@ Feature: AMQP messaging for file information
     Given the incoming amqp queue has a message with fields:
       | action        | file_info                  |
       | root_path     | 123/456                    |
-      | manifest_path | file_info_1.txt            |
+      | manifest_name | file_info_1.txt            |
       | status        | error                      |
       | error_message | Unknown error of some kind |
     And the root with path '123/456' has a backup job in state 'wait_manifest'

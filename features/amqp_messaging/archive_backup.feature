@@ -16,7 +16,7 @@ Feature: AMQP messaging for archive backup
       | action        | backup        |
       | archive_id    | 1             |
       | root_path     | 123/456       |
-      | manifest_path | archive_1.txt |
+      | manifest_name | archive_1.txt |
     And the archive backup job for the archive with id '1' should be in state 'await_response'
 
   Scenario: Receive message on completion of archive backup
@@ -25,8 +25,8 @@ Feature: AMQP messaging for archive backup
       | action            | backup            |
       | archive_id        | 1                 |
       | root_path         | 123/456           |
-      | manifest_path     | archive_1.txt     |
-      | bag_manifest_path | archive_bag_1.txt |
+      | manifest_name     | archive_1.txt     |
+      | bag_manifest_name | archive_bag_1.txt |
       | amazon_archive_id | some_long_string  |
       | status            | success           |
     When I process the incoming amqp queue
@@ -39,7 +39,7 @@ Feature: AMQP messaging for archive backup
       | action        | backup             |
       | archive_id    | 1                  |
       | root_path     | 123/456            |
-      | manifest_path | archive_1.txt      |
+      | manifest_name | archive_1.txt      |
       | status        | error              |
       | error_message | some error message |
     When I process the incoming amqp queue

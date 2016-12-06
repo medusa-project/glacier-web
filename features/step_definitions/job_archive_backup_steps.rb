@@ -16,3 +16,14 @@ end
 And(/^the archive backup job for the archive with id '(.*)' should have a stored message$/) do |archive_id|
   expect(Archive.find(archive_id).job_archive_backup.message).to be_present
 end
+
+And(/^the archive backup job for the archive with id '(.*)' has message with fields:$/) do |id, table|
+  job = Archive.find(id).job_archive_backup
+  Hash.new.tap do |h|
+    table.raw.each do |key, value|
+      h[key] = value
+    end
+    job.message = h
+    job.save!
+  end
+end
