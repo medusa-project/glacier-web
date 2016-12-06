@@ -38,22 +38,21 @@ class Job::RootBackup < Job::Base
   end
 
   def perform_create_archives
-    archives = Array.new
-    fileset = Array.new
-    total_size = 0
-    x = root.file_infos.to_a
-    root.file_infos.where(needs_archiving: true).order('size desc').each_instance do |file|
-      fileset << file.id
-      total_size += file.size
-      if total_size > Settings.archive_size_limit
-        archives << create_archive(fileset, total_size)
-        fileset = Array.new
-        total_size = 0
+    transaction do
+      fileset = Array.new
+      total_size = 0
+      root.file_infos.where(needs_archiving: true).order('size desc').each_instance do |file|
+        fileset << file.id
+        total_size += file.size
+        if total_size > Settings.archive_size_limit
+          create_archive(fileset, total_size)
+          fileset = Array.new
+          total_size = 0
+        end
       end
+      create_archive(fileset, total_size) if fileset.present?
+      put_in_queue(new_state: 'finish')
     end
-    archives << create_archive(fileset, total_size) if fileset.present?
-    archives.each { |archive| Job::ArchiveBackup.create_for(archive) }
-    put_in_queue(new_state: 'finish')
   end
 
   def perform_start
