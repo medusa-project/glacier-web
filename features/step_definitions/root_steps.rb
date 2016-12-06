@@ -74,3 +74,13 @@ Then(/^the root with path '(.*)' should have archives with fields:$/) do |path, 
     expect(root.archives.find_by(hash)).to be_truthy
   end
 end
+
+Given(/^there are roots with fields:$/) do |table|
+  table.hashes.each do |root|
+    FactoryGirl.create(:root, root)
+  end
+end
+
+And(/^the root backup job for the root with path '(.*)' should have a stored message$/) do |path|
+  expect(Root.find_by(path: path).job_root_backup.message).to be_truthy
+end

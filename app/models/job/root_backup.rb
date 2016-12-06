@@ -55,6 +55,15 @@ class Job::RootBackup < Job::Base
     end
   end
 
+  def perform_request_manifest
+    root.send_backup_request_message
+    put_in_queue(new_state: 'wait_manifest')
+  end
+
+  def perform_wait_manifest
+    #do nothing - do not requeue - we move from this state elsewhere
+  end
+
   def perform_start
     put_in_queue(new_state: 'request_manifest')
   end

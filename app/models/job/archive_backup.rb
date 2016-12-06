@@ -20,4 +20,16 @@ class Job::ArchiveBackup < Job::Base
     put_in_queue(new_state: 'await_response')
   end
 
+  def perform_start
+    put_in_queue(new_state: 'create_manifest')
+  end
+
+  def perform_await_response
+    #do nothing - something else will move us out of this state
+  end
+
+  def perform_finish
+    self.destroy!
+  end
+
 end

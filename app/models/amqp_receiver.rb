@@ -49,7 +49,10 @@ module AmqpReceiver
   end
 
   def process_file_info_message(message)
-
+    job = Root.find_by(path: message['root_path']).job_root_backup
+    job.message = message
+    job.save!
+    job.put_in_queue(new_state: 'process_manifest')
   end
 
 end
