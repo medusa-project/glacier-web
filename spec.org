@@ -28,6 +28,9 @@
     leave unimplemented for now
 *** DONE CLIENT asks SERVER to backup a specific root
     should result in a root_backup job being created and/or promoted
+*** CLIENT asks SERVER to backup a root that is already being backed up
+    depending on the status this should schedule a new backup job
+    after the current one completes
 *** CLIENT asks SERVER to remove specific files
     should find archives with files, set up new backup(s) to ensure that
     no good files in those are not backed up, then remove archives with
@@ -37,12 +40,14 @@
 *** FSI deletes an archive from AMAZON
 *** FSI retrieves an archive from AMAZON
 ** SERVER interacting with FSI
-*** TODO SERVER requests full file tree for a root
+*** DONE SERVER requests full file tree for a root
 *** FSI receives request for full file tree for a root
 *** FSI notifies of manifest creation for a root
-*** TODO SERVER provides a manifest and requests tarball and upload for an archive
+*** DONE SERVER receives notification of manifest creation for a root
+*** DONE SERVER provides a manifest and requests tarball and upload for an archive
 *** FSI receives manifest for upload of an archive
 *** FSI notifies of upload for an archive
+*** DONE SERVER receives notification of upload for an archive
 ** SERVER internal actions
 *** DONE SERVER converts file manifest into file info updates and creations
 *** DONE SERVER uses root/file info information to create archives for backup
@@ -50,6 +55,8 @@
 *** TODO SERVER runs backups in appropriate states
 *** TODO SERVER extracts files from archives
 *** TODO SERVER recreates root from archives
+*** SERVER processes manifest created for a root
+*** SERVER processes upload notification for an archive
 *** SERVER periodically checks roots to see if backup is required
 ** FSI internal actions
 *** FSI creates manifest for a given root
