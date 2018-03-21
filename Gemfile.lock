@@ -80,6 +80,7 @@ GEM
     config (1.2.1)
       activesupport (>= 3.0)
       deep_merge (~> 1.0, >= 1.0.1)
+    crass (1.0.3)
     cucumber (2.4.0)
       builder (>= 2.1.2)
       cucumber-core (~> 1.5.0)
@@ -127,7 +128,8 @@ GEM
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    loofah (2.0.3)
+    loofah (2.2.1)
+      crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
@@ -140,14 +142,12 @@ GEM
     multi_json (1.12.1)
     multi_test (0.1.2)
     nio4r (1.2.1)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     passenger (5.0.30)
       rack
       rake (>= 0.8.1)
     pg (0.18.4)
-    pkg-config (1.1.7)
     postgresql_cursor (0.6.1)
       activerecord (>= 3.1.0)
     rack (2.0.1)
@@ -255,4 +255,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.12.5
+   1.15.4
